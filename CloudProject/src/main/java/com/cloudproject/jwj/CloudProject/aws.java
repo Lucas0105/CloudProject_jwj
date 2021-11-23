@@ -2,12 +2,16 @@ package com.cloudproject.jwj.CloudProject;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.ec2.model.DescribeImagesRequest;
+import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.StartInstancesRequest;
 
 import java.util.Scanner;
 
@@ -40,8 +44,8 @@ public class aws {
 	public static void main(String[] args) throws Exception {
 		init();
 		Scanner menu = new Scanner(System.in);
-		Scanner id_string = new Scanner(System.in);
-		int number = 0;
+
+		
 		
 		while(true)
 		{
@@ -60,10 +64,18 @@ public class aws {
 		System.out.println("		99. quit		");
 		System.out.println("------------------------------------------------------------");
 		System.out.print("Enter an integer: ");
-		number = menu.nextInt();
+		int number = menu.nextInt();
 		switch(number) {
 		case 1:
-		listInstances();
+			listInstances();
+		break;
+		
+		case 3:
+			startInstance();
+		break;
+		
+		case 8:
+			listImage();
 		break;
 	
 		}
@@ -98,5 +110,49 @@ public class aws {
 	}
 	}
 	}
+	public static void startInstance()
+	{
+		Scanner id_string = new Scanner(System.in);
+		System.out.print("Enter instance id: ");
+		String instanceId = id_string.next();
+		System.out.printf("starting....%s\n", instanceId);
+
+
+		StartInstancesRequest request = new StartInstancesRequest()
+		    .withInstanceIds(instanceId);
+		try {
+		ec2.startInstances(request);
+		System.out.printf("Successfully started instance %s\n", instanceId);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public static void listImage()
+	{
+		System.out.println("Listing instances....");
+		boolean done = false;
+		DescribeImagesRequest request = new DescribeImagesRequest();
+		
+		while(!done) {
+		DescribeImagesResult response = ec2.describeImages(request);
+		
+		for(Image image : response.getImages()) {
+		
+		System.out.printf(
+		"[ImageID] %s, " +
+		"[Name] %s, " +
+		"[Owner] %s",
+		image.getImageId(),
+		image.getName(),
+		image.getOwnerId());
+		System.out.println();
+		}
+
+		if(response.getImages() == null) {
+		done = true;
+		}
+		}
+		}
 }
 		
