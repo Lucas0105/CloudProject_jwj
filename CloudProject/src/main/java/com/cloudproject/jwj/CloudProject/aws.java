@@ -12,6 +12,8 @@ import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
+import com.amazonaws.services.ec2.model.StopInstancesRequest;
+
 
 import java.util.Scanner;
 
@@ -43,9 +45,8 @@ public class aws {
 	
 	public static void main(String[] args) throws Exception {
 		init();
-		Scanner menu = new Scanner(System.in);
-
 		
+		Scanner menu = new Scanner(System.in);
 		
 		while(true)
 		{
@@ -74,6 +75,14 @@ public class aws {
 			startInstance();
 		break;
 		
+		case 5:
+			stopInstance();
+		break;
+		
+		case 7:
+			rebootInstance();
+		break;
+		
 		case 8:
 			listImage();
 		break;
@@ -81,6 +90,8 @@ public class aws {
 		}
 		}
 	}
+	
+//	function1
 	public static void listInstances()
 	{
 	System.out.println("Listing instances....");
@@ -110,6 +121,8 @@ public class aws {
 	}
 	}
 	}
+	
+//	function 3
 	public static void startInstance()
 	{
 		Scanner id_string = new Scanner(System.in);
@@ -127,7 +140,40 @@ public class aws {
 			System.out.println(e);
 		}
 	}
+
+//	function 5
+	public static void stopInstance()
+	{
+		Scanner id_string = new Scanner(System.in);
+		System.out.print("Enter instance id: ");
+		String instanceId = id_string.next();
+		StopInstancesRequest request = new StopInstancesRequest()
+			    .withInstanceIds(instanceId);
+		try {
+			ec2.stopInstances(request);
+			System.out.printf("Successfully stop instance %s\n", instanceId);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
 	
+//	function 7
+	public static void rebootInstance()
+	{
+		Scanner id_string = new Scanner(System.in);
+		System.out.print("Enter instance id: ");
+		String instanceId = id_string.next();
+		StopInstancesRequest request = new StopInstancesRequest()
+			    .withInstanceIds(instanceId);
+		try {
+			ec2.stopInstances(request);
+			System.out.printf("Successfully stop instance %s\n", instanceId);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+//function8
 	public static void listImage()
 	{
 		System.out.println("Listing instances....");
