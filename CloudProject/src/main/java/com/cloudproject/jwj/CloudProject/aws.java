@@ -10,6 +10,7 @@ import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.RebootInstancesRequest;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
@@ -167,11 +168,13 @@ public class aws {
 		Scanner id_string = new Scanner(System.in);
 		System.out.print("Enter instance id: ");
 		String instanceId = id_string.next();
-		StopInstancesRequest request = new StopInstancesRequest()
-			    .withInstanceIds(instanceId);
+		
+		System.out.printf("Rebooting ... %s\n", instanceId);
+		RebootInstancesRequest request = new RebootInstancesRequest().withInstanceIds(instanceId);
+		
 		try {
-			ec2.stopInstances(request);
-			System.out.printf("Successfully stop instance %s\n", instanceId);
+			ec2.rebootInstances(request);
+			System.out.printf("Successfully reboot instance %s\n", instanceId);
 		}catch(Exception e) {
 			System.out.println(e);
 		}
@@ -185,7 +188,8 @@ public class aws {
 			Properties prop = new Properties();
 			FileInputStream fis = new FileInputStream(propFile);
 			prop.load(new java.io.BufferedInputStream(fis));
-
+			
+			
 			DescribeImagesRequest request = new DescribeImagesRequest().withOwners(prop.getProperty("aws_id"));
 			
 			DescribeImagesResult response = ec2.describeImages(request);
