@@ -1,5 +1,7 @@
 package com.cloudproject.jwj.CloudProject;
 
+
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.ec2.model.DescribeImagesRequest;
@@ -16,6 +18,10 @@ import com.amazonaws.services.ec2.model.StopInstancesRequest;
 
 
 import java.util.Scanner;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class aws {
 	static AmazonEC2 	ec2;
@@ -71,6 +77,10 @@ public class aws {
 			listInstances();
 		break;
 		
+		case 2:
+			availableZones();
+		break;
+		
 		case 3:
 			startInstance();
 		break;
@@ -120,6 +130,12 @@ public class aws {
 	done = true;
 	}
 	}
+	}
+	
+//	function 2
+	public static void availableZones()
+	{
+		
 	}
 	
 //	function 3
@@ -174,13 +190,16 @@ public class aws {
 	}
 	
 //function8
-	public static void listImage()
+	public static void listImage() throws IOException
 	{
-		System.out.println("Listing instances....");
-		boolean done = false;
-		DescribeImagesRequest request = new DescribeImagesRequest();
+		System.out.println("Listing images....");
+		String propFile = "config/config.properties";
+		Properties prop = new Properties();
+		FileInputStream fis = new FileInputStream(propFile);
+		prop.load(new java.io.BufferedInputStream(fis));
+
+		DescribeImagesRequest request = new DescribeImagesRequest().withOwners(prop.getProperty("aws_id"));
 		
-		while(!done) {
 		DescribeImagesResult response = ec2.describeImages(request);
 		
 		for(Image image : response.getImages()) {
@@ -193,11 +212,6 @@ public class aws {
 		image.getName(),
 		image.getOwnerId());
 		System.out.println();
-		}
-
-		if(response.getImages() == null) {
-		done = true;
-		}
 		}
 		}
 }
