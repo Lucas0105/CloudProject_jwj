@@ -14,8 +14,12 @@ import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 
-
 import java.util.Scanner;
+import java.util.Scanner;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class aws {
 	static AmazonEC2 	ec2;
@@ -173,32 +177,29 @@ public class aws {
 		}
 	}
 	
-//function8
-	public static void listImage()
-	{
-		System.out.println("Listing instances....");
-		boolean done = false;
-		DescribeImagesRequest request = new DescribeImagesRequest();
-		
-		while(!done) {
-		DescribeImagesResult response = ec2.describeImages(request);
-		
-		for(Image image : response.getImages()) {
-		
-		System.out.printf(
-		"[ImageID] %s, " +
-		"[Name] %s, " +
-		"[Owner] %s",
-		image.getImageId(),
-		image.getName(),
-		image.getOwnerId());
-		System.out.println();
-		}
+	//function8
+		public static void listImage() throws IOException
+		{
+			System.out.println("Listing images....");
+			String propFile = "config/config.properties";
+			Properties prop = new Properties();
+			FileInputStream fis = new FileInputStream(propFile);
+			prop.load(new java.io.BufferedInputStream(fis));
 
-		if(response.getImages() == null) {
-		done = true;
-		}
-		}
-		}
+			DescribeImagesRequest request = new DescribeImagesRequest().withOwners(prop.getProperty("aws_id"));
+			
+			DescribeImagesResult response = ec2.describeImages(request);
+			
+			for(Image image : response.getImages()) {
+			
+			System.out.printf(
+			"[ImageID] %s, " +
+			"[Name] %s, " +
+			"[Owner] %s",
+			image.getImageId(),
+			image.getName(),
+			image.getOwnerId());
+			System.out.println();
+			}
+			}
 }
-		
