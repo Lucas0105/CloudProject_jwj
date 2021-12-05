@@ -12,6 +12,8 @@ import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.RebootInstancesRequest;
 import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.RunInstancesRequest;
+import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 
@@ -82,6 +84,10 @@ public class aws {
 		
 		case 5:
 			stopInstance();
+		break;
+		
+		case 6:
+			createInstance();
 		break;
 		
 		case 7:
@@ -157,6 +163,30 @@ public class aws {
 		try {
 			ec2.stopInstances(request);
 			System.out.printf("Successfully stop instance %s\n", instanceId);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+//function6
+	public static void createInstance()
+	{
+		Scanner id_string = new Scanner(System.in);
+		System.out.print("Enter ami id: ");
+		String amiId = id_string.next();
+		
+		RunInstancesRequest request = new RunInstancesRequest()
+				.withImageId(amiId)
+				.withMinCount(1)
+				.withMaxCount(1)
+				.withKeyName("awskey")
+				.withSecurityGroups("htcondor-security")
+				.withInstanceType("t2.micro");
+		
+		try {
+			RunInstancesResult result = ec2.runInstances(request);
+			String instanceId = result.getReservation().getInstances().get(0).getInstanceId();
+			System.out.printf("Successfully started EC2 instance %s based on AMI %s\n",instanceId, amiId);
 		}catch(Exception e) {
 			System.out.println(e);
 		}
