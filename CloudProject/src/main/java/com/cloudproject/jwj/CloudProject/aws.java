@@ -11,14 +11,17 @@ import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.DescribeRegionsResult;
 import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.RebootInstancesRequest;
+import com.amazonaws.services.ec2.model.Region;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
+import com.amazonaws.services.lambda.model.EC2AccessDeniedException;
 
 import java.util.Scanner;
 import java.util.Scanner;
@@ -55,10 +58,10 @@ public class aws {
 	
 	public static void main(String[] args) throws Exception {
 		init();
-		
+		boolean systemCheck = true;
 		Scanner menu = new Scanner(System.in);
 		
-		while(true)
+		while(systemCheck)
 		{
 		System.out.println("		");
 		System.out.println("		");
@@ -89,6 +92,10 @@ public class aws {
 			startInstance();
 		break;
 		
+		case 4:
+			availableRegions();
+		break;
+		
 		case 5:
 			stopInstance();
 		break;
@@ -105,6 +112,10 @@ public class aws {
 			listImage();
 		break;
 	
+		case 99:
+			systemCheck = false; 
+			System.out.println("Quit AWS Control Panel");
+		break;
 		}
 		}
 	}
@@ -181,6 +192,24 @@ public class aws {
 		}
 	}
 
+//	function 4
+	public static void availableRegions()
+	{
+		System.out.println("Available reions ....");
+		DescribeRegionsResult result = ec2.describeRegions();
+		
+		for (Region region : result.getRegions()){
+			{
+				System.out.printf(
+					"[region] %s, " + 
+					"[endpotin] %s\n",
+					region.getRegionName(),
+					region.getEndpoint()
+				);
+			}
+		}
+	}
+	
 //	function 5
 	public static void stopInstance()
 	{
