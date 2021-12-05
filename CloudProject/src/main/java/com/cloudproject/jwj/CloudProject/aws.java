@@ -58,10 +58,10 @@ public class aws {
 	
 	public static void main(String[] args) throws Exception {
 		init();
-		
+		boolean systemCheck = true;
 		Scanner menu = new Scanner(System.in);
 		
-		while(true)
+		while(systemCheck)
 		{
 		System.out.println("		");
 		System.out.println("		");
@@ -112,6 +112,10 @@ public class aws {
 			listImage();
 		break;
 	
+		case 99:
+			systemCheck = false; 
+			System.out.println("Quit AWS Control Panel");
+		break;
 		}
 		}
 	}
