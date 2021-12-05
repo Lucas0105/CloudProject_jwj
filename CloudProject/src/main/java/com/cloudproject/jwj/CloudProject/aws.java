@@ -2,6 +2,9 @@ package com.cloudproject.jwj.CloudProject;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.ec2.model.AvailabilityZone;
+import com.amazonaws.services.ec2.model.DescribeAvailabilityZonesRequest;
+import com.amazonaws.services.ec2.model.DescribeAvailabilityZonesResult;
 import com.amazonaws.services.ec2.model.DescribeImagesRequest;
 import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.AmazonEC2;
@@ -78,6 +81,10 @@ public class aws {
 			listInstances();
 		break;
 		
+		case 2:
+			availableZones();
+		break;
+		
 		case 3:
 			startInstance();
 		break;
@@ -131,6 +138,28 @@ public class aws {
 	done = true;
 	}
 	}
+	}
+//	function2
+	public static void availableZones() {
+		System.out.print("Available zones....\n");
+		DescribeAvailabilityZonesRequest request = new DescribeAvailabilityZonesRequest();
+		DescribeAvailabilityZonesResult result = ec2.describeAvailabilityZones(request);
+		int cnt = 0;
+		
+		for (AvailabilityZone zone : result.getAvailabilityZones())
+		{
+			cnt ++;
+			System.out.printf(
+					"[id] %s, " +
+					"[region] %s, " +
+					"[zone] %s\n",
+					zone.getZoneId(),
+					zone.getRegionName(),
+					zone.getZoneName());
+		}
+
+		System.out.printf("You have access to %d Availability Zones.", cnt);
+		
 	}
 	
 //	function 3
