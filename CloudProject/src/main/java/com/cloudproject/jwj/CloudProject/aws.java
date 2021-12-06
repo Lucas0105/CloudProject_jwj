@@ -1,7 +1,6 @@
 package com.cloudproject.jwj.CloudProject;
 
 import com.amazonaws.AmazonClientException;
-import com.amazonaws.Request;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.ec2.model.AvailabilityZone;
 import com.amazonaws.services.ec2.model.DescribeAvailabilityZonesRequest;
@@ -24,18 +23,12 @@ import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
-import com.amazonaws.services.ec2.model.TerminateInstancesResult;
 import com.amazonaws.services.ec2.model.UnmonitorInstancesRequest;
-import com.amazonaws.services.lambda.model.EC2AccessDeniedException;
 
 import java.util.Scanner;
 
-import javax.management.monitor.Monitor;
-
-import java.util.Scanner;
 import java.util.Properties;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class aws {
@@ -138,6 +131,7 @@ public class aws {
 		break;
 		}
 		}
+		menu.close();
 	}
 	
 //	function1
@@ -210,6 +204,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
+		id_string.close();
 	}
 
 //	function 4
@@ -244,6 +239,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
+		id_string.close();
 	}
 	
 //function6
@@ -268,6 +264,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
+		id_string.close();
 	}
 	
 //	function 7
@@ -286,6 +283,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
+		id_string.close();
 	}
 	
 	//function8
@@ -326,8 +324,8 @@ public class aws {
 				System.out.printf("Successfully enable monitoring instance %s\n", instanceId);
 			} catch (Exception e) {
 				System.out.printf("%s", e);
-				// TODO: handle exception
 			}
+			id_string.close();
 			
 	
 		}
@@ -343,8 +341,8 @@ public class aws {
 				System.out.printf("Successfully disable monitoring instance %s\n", instanceId);
 			} catch (Exception e) {
 				System.out.printf("%s", e);
-				// TODO: handle exception
 			}
+			id_string.close();
 		}
 //		function11
 		public static void terminateInstance() {
@@ -355,11 +353,11 @@ public class aws {
 			TerminateInstancesRequest request = new TerminateInstancesRequest().withInstanceIds(instanceId);
 			
 			try {
-				TerminateInstancesResult response = ec2.terminateInstances(request);
+				ec2.terminateInstances(request);
 				System.out.printf("Successfully terminate instance %s\n", instanceId);
 			} catch (Exception e) {
 				System.out.printf("%s", e);
-				// TODO: handle exception
 			}
+			id_string.close();
 		}
 }
