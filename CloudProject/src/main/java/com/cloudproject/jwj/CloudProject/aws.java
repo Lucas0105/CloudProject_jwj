@@ -23,6 +23,8 @@ import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
+import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
+import com.amazonaws.services.ec2.model.TerminateInstancesResult;
 import com.amazonaws.services.ec2.model.UnmonitorInstancesRequest;
 import com.amazonaws.services.lambda.model.EC2AccessDeniedException;
 
@@ -77,12 +79,12 @@ public class aws {
 		System.out.println(" Cloud Computing, Computer Science Department		");
 		System.out.println("		at Chungbuk National University ");
 		System.out.println("------------------------------------------------------------");
-		System.out.println(" 1. list instance			2. available zones		");
-		System.out.println(" 3. start instance			4. available regions		");
-		System.out.println(" 5. stop instance			6. create instance		");
-		System.out.println(" 7. reboot instance			8. list images		");
+		System.out.println(" 1. list instance		2. available zones		");
+		System.out.println(" 3. start instance		4. available regions		");
+		System.out.println(" 5. stop instance		6. create instance		");
+		System.out.println(" 7. reboot instance		8. list images		");
 		System.out.println(" 9. enable monitoring		10. disable monitoring	");
-		System.out.println("		   99. quit		");
+		System.out.println(" 11. terminate instance		99. quit		");
 		System.out.println("------------------------------------------------------------");
 		System.out.print("Enter an integer: ");
 		int number = menu.nextInt();
@@ -126,6 +128,10 @@ public class aws {
 		case 10:
 			disableMonitoring();
 		break;
+		case 11:
+			terminateInstance();
+		break;
+		
 		case 99:
 			systemCheck = false; 
 			System.out.println("Quit AWS Control Panel");
@@ -339,7 +345,21 @@ public class aws {
 				System.out.printf("%s", e);
 				// TODO: handle exception
 			}
+		}
+//		function11
+		public static void terminateInstance() {
+			Scanner id_string = new Scanner(System.in);
+			System.out.print("Enter instance id: ");
+			String instanceId = id_string.next();
 			
-	
+			TerminateInstancesRequest request = new TerminateInstancesRequest().withInstanceIds(instanceId);
+			
+			try {
+				TerminateInstancesResult response = ec2.terminateInstances(request);
+				System.out.printf("Successfully terminate instance %s\n", instanceId);
+			} catch (Exception e) {
+				System.out.printf("%s", e);
+				// TODO: handle exception
+			}
 		}
 }
