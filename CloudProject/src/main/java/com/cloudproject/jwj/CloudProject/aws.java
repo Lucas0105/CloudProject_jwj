@@ -1,6 +1,7 @@
 package com.cloudproject.jwj.CloudProject;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.Request;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.ec2.model.AvailabilityZone;
 import com.amazonaws.services.ec2.model.DescribeAvailabilityZonesRequest;
@@ -14,6 +15,7 @@ import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.DescribeRegionsResult;
 import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.MonitorInstancesRequest;
 import com.amazonaws.services.ec2.model.RebootInstancesRequest;
 import com.amazonaws.services.ec2.model.Region;
 import com.amazonaws.services.ec2.model.Reservation;
@@ -21,9 +23,13 @@ import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
+import com.amazonaws.services.ec2.model.UnmonitorInstancesRequest;
 import com.amazonaws.services.lambda.model.EC2AccessDeniedException;
 
 import java.util.Scanner;
+
+import javax.management.monitor.Monitor;
+
 import java.util.Scanner;
 import java.util.Properties;
 import java.io.FileInputStream;
@@ -71,11 +77,12 @@ public class aws {
 		System.out.println(" Cloud Computing, Computer Science Department		");
 		System.out.println("		at Chungbuk National University ");
 		System.out.println("------------------------------------------------------------");
-		System.out.println(" 1. list instance		2. available zones		");
-		System.out.println(" 3. start instance		4. available regions		");
-		System.out.println(" 5. stop instance		6. create instance		");
-		System.out.println(" 7. reboot instance		8. list images		");
-		System.out.println("		99. quit		");
+		System.out.println(" 1. list instance			2. available zones		");
+		System.out.println(" 3. start instance			4. available regions		");
+		System.out.println(" 5. stop instance			6. create instance		");
+		System.out.println(" 7. reboot instance			8. list images		");
+		System.out.println(" 9. enable monitoring		10. disable monitoring	");
+		System.out.println("		   99. quit		");
 		System.out.println("------------------------------------------------------------");
 		System.out.print("Enter an integer: ");
 		int number = menu.nextInt();
@@ -112,6 +119,13 @@ public class aws {
 			listImage();
 		break;
 	
+		case 9:
+			enableMonitoring();
+		break;
+		
+		case 10:
+			disableMonitoring();
+		break;
 		case 99:
 			systemCheck = false; 
 			System.out.println("Quit AWS Control Panel");
@@ -294,4 +308,38 @@ public class aws {
 			System.out.println();
 			}
 			}
+//		function9
+		public static void enableMonitoring() {
+			Scanner id_string = new Scanner(System.in);
+			System.out.print("Enter instance id: ");
+			String instanceId = id_string.next();
+			
+			MonitorInstancesRequest request = new MonitorInstancesRequest().withInstanceIds(instanceId);
+			try {
+				ec2.monitorInstances(request);
+				System.out.printf("Successfully enable monitoring instance %s\n", instanceId);
+			} catch (Exception e) {
+				System.out.printf("%s", e);
+				// TODO: handle exception
+			}
+			
+	
+		}
+//		function10
+		public static void disableMonitoring() {
+			Scanner id_string = new Scanner(System.in);
+			System.out.print("Enter instance id: ");
+			String instanceId = id_string.next();
+			
+			UnmonitorInstancesRequest request = new UnmonitorInstancesRequest().withInstanceIds(instanceId);
+			try {
+				ec2.unmonitorInstances(request);
+				System.out.printf("Successfully disable monitoring instance %s\n", instanceId);
+			} catch (Exception e) {
+				System.out.printf("%s", e);
+				// TODO: handle exception
+			}
+			
+	
+		}
 }
