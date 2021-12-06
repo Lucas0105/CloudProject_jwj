@@ -61,6 +61,7 @@ public class aws {
 		init();
 		boolean systemCheck = true;
 		Scanner menu = new Scanner(System.in);
+
 		
 		while(systemCheck)
 		{
@@ -199,12 +200,14 @@ public class aws {
 		StartInstancesRequest request = new StartInstancesRequest()
 		    .withInstanceIds(instanceId);
 		try {
-		ec2.startInstances(request);
-		System.out.printf("Successfully started instance %s\n", instanceId);
-		}catch(Exception e) {
+			ec2.startInstances(request);
+			System.out.printf("Successfully started instance %s\n", instanceId);
+
+			}catch(Exception e) {
 			System.out.println(e);
 		}
-		id_string.close();
+		
+		
 	}
 
 //	function 4
@@ -239,7 +242,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
-		id_string.close();
+
 	}
 	
 //function6
@@ -264,7 +267,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
-		id_string.close();
+
 	}
 	
 //	function 7
@@ -283,7 +286,7 @@ public class aws {
 		}catch(Exception e) {
 			System.out.println(e);
 		}
-		id_string.close();
+
 	}
 	
 	//function8
@@ -325,9 +328,6 @@ public class aws {
 			} catch (Exception e) {
 				System.out.printf("%s", e);
 			}
-			id_string.close();
-			
-	
 		}
 //		function10
 		public static void disableMonitoring() {
@@ -342,7 +342,6 @@ public class aws {
 			} catch (Exception e) {
 				System.out.printf("%s", e);
 			}
-			id_string.close();
 		}
 //		function11
 		public static void terminateInstance() {
@@ -358,6 +357,5 @@ public class aws {
 			} catch (Exception e) {
 				System.out.printf("%s", e);
 			}
-			id_string.close();
 		}
 }
