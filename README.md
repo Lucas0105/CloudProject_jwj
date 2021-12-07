@@ -4,7 +4,7 @@
 Dynamic Virtual Resource Managment Program
 
 # Function
-function1 	list instance
+function1 	list instance <br/>
 function2	  available zones
 function3 	start instance
 function4 	available regions
