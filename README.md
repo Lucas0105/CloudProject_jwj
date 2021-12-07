@@ -1,9 +1,9 @@
 # TermProject
 
-#Introduction
+# Introduction
 Dynamic Virtual Resource Managment Program
 
-#Function
+# Function
 function1 	list instance
 function2	  available zones
 function3 	start instance
@@ -16,8 +16,8 @@ function9	  enable monitoring
 function10	disable monitoring
 function11	terminate instance
 
-#IDE
+# IDE
 eclipse
 
-#Build Tool
+# Build Tool
 Maven
